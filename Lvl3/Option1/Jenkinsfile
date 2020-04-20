@@ -1,0 +1,49 @@
+pipeline {
+    agent {
+        docker {
+            image 'node:6-alpine'
+            args '-p 3000:3000 -p 5000:5000'
+        }
+    }
+    environment {
+        CI = 'true'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './scripts/test.sh'
+            }
+        }
+
+        stage('Deliver for deployment') {
+            steps {
+                sh './scripts/deliver.sh'
+            }
+        }
+ stage('Cleanup'){
+
+          echo 'prune and cleanup'
+          sh 'npm prune'
+          sh 'rm node_modules -rf'
+
+          mail body: 'project build successful',
+                      from: 'xxxx@yyyyy.com',
+                      replyTo: 'xxxx@yyyy.com',
+                      subject: 'project build successful',
+                      to: 'yyyyy@yyyy.com'
+        }
+    }
+
+    post {
+        failure {
+            mail to: 'team@example.com',
+                 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+                 body: "Something is wrong with ${env.BUILD_URL}"
+        }
+    }
+}
