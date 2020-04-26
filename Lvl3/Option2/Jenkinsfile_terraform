@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('checkout') {
+          steps {
+            checkout scm
+          }
+        }
+    stages {
+        stage('init') {
+            steps {
+                sh 'cd Lvl3/Option2/Terraform/'
+                sh 'terraform init'
+            }
+        }
+        stage('plan') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+
+        stage('apply') {
+            steps {
+                sh 'terraform apply'
+            }
+        }

@@ -1,0 +1,19 @@
+Steps to Use the code :
+
+1. Commit all the files under Option1 folder in to Github repo along with Jenkinsfile.
+
+2. Enable Webhooks for the github, so that when ever a commit happens to the repository , Jenkins job will be run.
+
+3. Configure Multibranch pipeline Job in Jenkins using the Jenkinsfile as source.
+
+4.Build Triggers: Select option GitHub hook trigger for GITScm polling. This will start our Jenkins job on every git push on the master branch.
+
+5. When ever a commit happens on github, Jenkins job start
+
+6. Jenkinsfile contains multiple steps which runs:
+
+1. In checkout stage , clone the code on to the local.
+2. In build stage, dependencies are installed.
+3. In test stage, test script located under folder test will be executed.
+4. In delivery stage, The code is run on deployment server.
+5. In post stage, the build status is reported to Github.

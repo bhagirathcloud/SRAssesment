@@ -1,0 +1,29 @@
+Steps to Use the code :
+
+1. Commit all the files under Option2 folder in to Github repo along with  both Jenkinsfiles.
+
+2. Enable Webhooks for the github, so that when ever a commit happens to the repository , Jenkins job will be run.
+
+3. Configure 2 Multibranch pipeline Jobs in Jenkins .
+a. Once to build a ECS cluster in AWS using Terraform using Jenkinsfile_terraform
+b. Another to deploy docker application on to ECR cluster using Jenkinsfile
+
+4.Build Triggers: Select option GitHub hook trigger for GITScm polling. This will start our Jenkins job on every git push on the master branch for both the Jobs.
+
+5. When ever a commit happens on github, Jenkins job start or we can run them manually.
+a. We can run Jenkins job for terraform first to spin up the ECS cluster
+b. We can run Jenkins job for the app deployment after the 1st Job.
+
+6. Jenkinsfile for app deployment contains multiple steps which runs:
+
+1. In checkout stage , clone the code on to the local.
+2. In build stage, docker image is build and push to the repo.
+3. In deploy stage , task definition file is updated with image and deployed to fargate.
+
+
+7. Jenkinsfile for terraform deployment contains multiple steps which runs:
+
+   1. In checkout stage , clone the code on to the local.
+   2. In init step , we are initializing the the terraform modules.
+   3. In plan step, we are kind of dry run to see what resources will be created.
+   3. In apply stage, all the resources will be created.

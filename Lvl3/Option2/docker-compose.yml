@@ -1,0 +1,7 @@
+#Nginx Service
+#Nginx Service
+  webserver:
+    build: ./
+    container_name: webserver
+    ports:
+      - "80:80"
